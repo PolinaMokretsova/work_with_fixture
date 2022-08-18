@@ -6,20 +6,27 @@ from selene.support.shared import browser
 
 
 @pytest.fixture(scope='function')
-def browser_config():
+def browser_desktop():
     browser.config.browser_name = 'chrome'
     browser.config.window_width = 1200
     browser.config._window_height = 1100
 
 
-def test_github_desktop(browser_config):
+@pytest.fixture(scope='function')
+def browser_mobile():
+    browser.config.browser_name = 'chrome'
+    browser.config.window_width = 310
+    browser.config._window_height = 516
+
+
+def test_github_desktop(browser_mobile):
     if browser.config.window_width < 1000:
         pytest.skip('Size for mobile version')
     browser.open('https://github.com/')
     browser.element('[class="HeaderMenu-link flex-shrink-0 no-underline"]').click()
 
 
-def test_github_mobile(browser_config):
+def test_github_mobile(browser_desktop):
     if browser.config.window_height > 1000:
         pytest.skip('Size for browser version')
     browser.open('https://github.com/')
